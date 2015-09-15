@@ -10,14 +10,14 @@ import com.frostbyte.theaverybot.sql.SqlHandler;
 import com.frostbyte.theaverybot.util.ObjectUtil;
 import com.frostbyte.theaverybot.util.PlayerUtil;
 
-public class PointCommand extends Command {
+public class CreditCommand extends Command {
 	@Override
 	public void onCommand(String sender, String[] args) {
 		if(args.length == 0){
 			Map<String, Object> objects = PlayerUtil.getCurrency(sender, getBotManager().channel);
-			int amount = ObjectUtil.objectToInt(objects.get("points"));
+			int amount = ObjectUtil.objectToInt(objects.get("credits"));
 			
-			getBotManager().getAveryBot().sendMessage(sender + " has " + amount + " points!");
+			getBotManager().getAveryBot().sendMessage(sender + " has " + amount + " credits!");
 		}else{
 			List<Map<String, Object>> users = SqlHandler.twitch_Accounts.get("username", args[0].toLowerCase());
 
@@ -29,18 +29,18 @@ public class PointCommand extends Command {
 				List<Map<String, Object>> currencies = SqlHandler.currencies.get(where);
 				
 				if(currencies.size() > 0){
-					int amount = ObjectUtil.objectToInt(currencies.get(0).get("points"));
-					getBotManager().getAveryBot().sendMessage(args[0].toLowerCase() + " has " + amount + " points!");
+					int amount = ObjectUtil.objectToInt(currencies.get(0).get("credits"));
+					getBotManager().getAveryBot().sendMessage(args[0].toLowerCase() + " has " + amount + " credits!");
 				}else{
-					getBotManager().getAveryBot().sendMessage("Could not find user's points!");
+					getBotManager().getAveryBot().sendMessage("Could not find user's credits!");
 				}
 			}else{
-				getBotManager().getAveryBot().sendMessage("Could not find user's points!");
+				getBotManager().getAveryBot().sendMessage("Could not find user's credits!");
 			}
 		}
 	}
 
-	public PointCommand(BotManager botManager) {
-		super(botManager, new String[] { "$point", "$points" });
+	public CreditCommand(BotManager botManager) {
+		super(botManager, new String[] { "$credit", "$credits" });
 	}
 }

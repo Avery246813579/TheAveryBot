@@ -16,6 +16,10 @@ public abstract class FrostBot extends Irc {
 
 	protected abstract void onBotConnect();
 	
+	protected void update(){
+		
+	}
+	
 	public void connect() {
 		try {
 			connect("irc.twitch.tv", 6667, "oauth:" + oauth);

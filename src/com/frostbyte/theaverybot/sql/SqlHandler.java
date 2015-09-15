@@ -21,10 +21,10 @@ public class SqlHandler extends com.frostbyte.javasqlapi.SqlHandler{
 	
 	public SqlHandler() {
 		SQL_HOST = "127.0.0.1";
-		//SQL_PASS = "t]T}1a!@()90";
-		//SQL_USER = "frostbyt_site";
-		SQL_PASS = "";
-		SQL_USER = "root";
+		SQL_PASS = "t]T}1a!@()90";
+		SQL_USER = "frostbyt_site";
+		//SQL_PASS = "";
+		//SQL_USER = "root";
 
 		//log = true;
 		console_errors = true;

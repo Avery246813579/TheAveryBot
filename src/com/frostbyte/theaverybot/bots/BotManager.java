@@ -20,27 +20,28 @@ public class BotManager {
 	public BotManager(ActiveBot activeBot) {
 		channel = ObjectUtil.objectToString(SqlHandler.twitch_Accounts.get("account_id", ObjectUtil.intToObject(activeBot.getAccount_id())).get(0).get("username"));
 		account_id = activeBot.getAccount_id();
-		
+
 		Map<String, Object> table = SqlHandler.bot_Type.get("bot_id", ObjectUtil.intToObject(activeBot.getBot_id())).get(0);
 		trivia_username = ObjectUtil.objectToString(table.get("trivia_username"));
 		trivia_oauth = ObjectUtil.objectToString(table.get("trivia_oauth"));
 		regular_username = ObjectUtil.objectToString(table.get("regular_username"));
 		regular_oauth = ObjectUtil.objectToString(table.get("regular_oauth"));
-		
+
 		this.enabled = true;
-		
+
 		this.averyBot = new TheAveryBot(this, channel, regular_username, regular_oauth);
-		
+
 		triviaManager = new TriviaManager(this);
 		commandHandler = new CommandHandler(this);
-		
+
 		botThread = new BotThread(this);
 		botThread.start();
 	}
-	
-	public void shutdown(){
+
+	public void shutdown() {
 		enabled = false;
 		triviaManager.stop();
+		averyBot.running = false;
 	}
 
 	public void update() {
@@ -48,7 +49,7 @@ public class BotManager {
 			triviaManager.update();
 		}
 	}
-	
+
 	public void onMessage(String channel, String sender, String message) {
 		commandHandler.onMessage(sender, message);
 	}

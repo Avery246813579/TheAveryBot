@@ -7,12 +7,12 @@ public abstract class Command {
 	private String[] commands;
 	private BotManager botManager;
 	
-	protected Command(BotManager botManager, String command) {
+	public Command(BotManager botManager, String command) {
 		this.botManager = botManager;
 		this.command = command;
 	}
 	
-	protected Command(BotManager botManager, String[] commands){
+	public Command(BotManager botManager, String[] commands){
 		this.botManager = botManager;
 		this.setCommands(commands);
 	}

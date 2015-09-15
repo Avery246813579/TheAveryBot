@@ -5,7 +5,7 @@ import com.frostbyte.javasqlapi.Table;
 public class Commands extends Table{
 	public Commands() {
 		super("frostbyt_theaverybot", "Commands");
-		variables.put("command_key", "INT NOT NULL AUTO_INCREMENT");
+		variables.put("command_id", "INT NOT NULL AUTO_INCREMENT");
 		variables.put("account_id", "INT");
 		variables.put("command", "VARCHAR(100)");
 		variables.put("content", "TEXT");
