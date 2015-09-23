@@ -24,6 +24,24 @@ public class PlayerUtil {
 
 		return null;
 	}
+	
+	public static Map<String, Object> getUserId(int i) {
+		List<Map<String, Object>> tables = SqlHandler.twitch_Accounts.get("twitch_id", i);
+
+		if (tables.size() <= 0) {
+			Map<String, Object> table = new HashMap<String, Object>();
+			table.put("twitch_id", i);
+			SqlHandler.twitch_Accounts.create(table);
+
+			tables = SqlHandler.twitch_Accounts.get("twitch_id", i);
+		}
+
+		for (Map<String, Object> table : tables) {
+			return table;
+		}
+
+		return null;
+	}
 
 	public static Map<String, Object> getCurrency(String username, String channel) {
 		Map<String, Object> user = getUser(username.toLowerCase());

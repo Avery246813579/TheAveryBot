@@ -14,7 +14,7 @@ public class BotManager {
 	private boolean enabled = false;
 	private TriviaManager triviaManager;
 	private CommandHandler commandHandler;
-	private TheAveryBot averyBot;
+	private TheAveryBot averyBot; 
 	private int account_id;
 
 	public BotManager(ActiveBot activeBot) {
@@ -51,7 +51,9 @@ public class BotManager {
 	}
 
 	public void onMessage(String channel, String sender, String message) {
-		commandHandler.onMessage(sender, message);
+		if (commandHandler != null) {
+			commandHandler.onMessage(sender, message);
+		}
 	}
 
 	public boolean isEnabled() {

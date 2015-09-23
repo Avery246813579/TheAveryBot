@@ -1,7 +1,13 @@
 package com.frostbyte.theaverybot.bots.trivia;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.frostbyte.theaverybot.bots.BotManager;
 import com.frostbyte.theaverybot.games.trivia.Question;
@@ -13,12 +19,29 @@ import com.frostbyte.theaverybot.util.PlayerUtil;
 public class TriviaManager {
 	private boolean enabled = true;
 	private int delay = 30, SECOND = -delay, type_id = 1;
+	public Map<String, Integer> trivia = new LinkedHashMap<String, Integer>();
 	private Question question = null;
 	private TriviaBot triviaBot;
 
 	public TriviaManager(BotManager botManager) {
 		this.triviaBot = new TriviaBot(this, botManager.channel, botManager.trivia_username, botManager.trivia_oauth);
 		resetTrivia();
+
+		Map<String, Object> where = new HashMap<String, Object>();
+		where.put("channel", botManager.channel);
+		for (Map<String, Object> users : SqlHandler.currencies.get(where)) {
+			List<Map<String, Object>> tables = SqlHandler.twitch_Accounts.get("twitch_id", ObjectUtil.objectToInt(users.get("twitch_id")));
+
+			if (tables.size() <= 0) {
+				Map<String, Object> table = new HashMap<String, Object>();
+				table.put("twitch_id", ObjectUtil.objectToInt(users.get("twitch_id")));
+				SqlHandler.twitch_Accounts.create(table);
+
+				tables = SqlHandler.twitch_Accounts.get("twitch_id", ObjectUtil.objectToInt(users.get("twitch_id")));
+			}
+
+			trivia.put(ObjectUtil.objectToString(tables.get(0).get("username")), ObjectUtil.objectToInt(users.get("points")));
+		}
 	}
 
 	public void stop() {
@@ -80,12 +103,43 @@ public class TriviaManager {
 		where.put("channel", triviaBot.getChannel());
 		SqlHandler.currencies.update(info, where);
 
+		if(!trivia.containsKey(name)){
+			trivia.put(name, ObjectUtil.objectToInt(playerInfo.get("points")) + 1);
+		}
+
+		List<Map.Entry<String, Integer>> entries = new LinkedList<Map.Entry<String, Integer>>(trivia.entrySet());
+
+		Collections.sort(entries, new Comparator<Map.Entry<String, Integer>>() {
+			public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) {
+				return o2.getValue().compareTo(o1.getValue());
+			}
+		});
+
+		trivia.clear();
+
+		for (Map.Entry<String, Integer> entry : entries) {
+			trivia.put(entry.getKey(), entry.getValue());
+		}
+		
+		String last = getLast(name);
+		int last_points;
+		if (!last.equalsIgnoreCase("NULL")) {
+			last_points = trivia.get(last.toLowerCase());
+		} else {
+			last_points = 0;
+		}
+
+		int needed = last_points - (ObjectUtil.objectToInt(playerInfo.get("points")) + 1);
+		
 		/** Send Message **/
 		String message = TriviaHandler.trivias.get(type_id).getMessages().get("CORRECT_ANSWER");
 		message = message.replaceAll("\\{PLAYER_NAME\\}", name);
 		message = message.replaceAll("\\{PLAYER_AMOUNT\\}", "" + (ObjectUtil.objectToInt(playerInfo.get("points")) + 1));
 		message = message.replaceAll("\\{ANSWER\\}", question.getAnswer());
 		message = message.replaceAll("\\{QUESTION\\}", question.getQuestion());
+		message = message.replaceAll("\\{RANK\\}", Integer.toString(getValue(name)));
+		message = message.replaceAll("\\{NEEDED\\}", Integer.toString(needed));
+		message = message.replaceAll("\\{MAX\\}", Integer.toString(trivia.size()));
 
 		triviaBot.sendMessage(message);
 
@@ -162,5 +216,33 @@ public class TriviaManager {
 
 	public void setTriviaBot(TriviaBot triviaBot) {
 		this.triviaBot = triviaBot;
+	}
+
+	public int getValue(String sender) {
+		int i = 1;
+
+		for (String name : trivia.keySet()) {
+			if (name.equalsIgnoreCase(sender)) {
+				return i;
+			}
+
+			i++;
+		}
+
+		return trivia.size() + 1;
+	}
+
+	public String getLast(String sender) {
+		String last = "NULL";
+
+		for (String name : trivia.keySet()) {
+			if (name.equalsIgnoreCase(sender)) {
+				return last;
+			}
+
+			last = name;
+		}
+
+		return "NULL";
 	}
 }
