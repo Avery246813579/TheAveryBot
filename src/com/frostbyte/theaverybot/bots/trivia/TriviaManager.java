@@ -63,7 +63,7 @@ public class TriviaManager {
 			if (triviaInfo.isEmpty()) {
 				Map<String, Object> triviaCreate = new HashMap<String, Object>();
 				triviaCreate.put("account_id", botManager.getAccount_id());
-				triviaCreate.put("active", 1);
+				triviaCreate.put("active", 0);
 				triviaCreate.put("type", 1);
 				triviaCreate.put("delay", 30);
 				SqlHandler.trivia_Settings.create(triviaCreate);
