@@ -15,22 +15,25 @@ import com.frostbyte.theaverybot.util.ObjectUtil;
 
 public class CommandHandler {
 	private List<Command> commands = new ArrayList<Command>();
-	
+
 	public CommandHandler(final BotManager botManager) {
 		/** Adds Default Commands **/
 		commands.add(new PointCommand(botManager));
 		commands.add(new CreditCommand(botManager));
 		commands.add(new DeveloperCommand(botManager));
 		commands.add(new TriviaCommand(botManager));
-		
-		for(final Map<String, Object> commands : SqlHandler.commands.get("account_id", botManager.getAccount_id())){
-			this.commands.add(new Command(botManager, ObjectUtil.objectToString(commands.get("command"))) {
-				
-				@Override
-				public void onCommand(String sender, String[] args) {
-					botManager.getAveryBot().sendMessage(ObjectUtil.objectToString(commands.get("content")));
-				}
-			});
+
+		if (SqlHandler.commands.get("account_id", botManager.getAccount_id()) != null) {
+			for (final Map<String, Object> commands : SqlHandler.commands.get("account_id",
+					botManager.getAccount_id())) {
+				this.commands.add(new Command(botManager, ObjectUtil.objectToString(commands.get("command"))) {
+
+					@Override
+					public void onCommand(String sender, String[] args) {
+						botManager.getAveryBot().sendMessage(ObjectUtil.objectToString(commands.get("content")));
+					}
+				});
+			}
 		}
 	}
 
@@ -38,14 +41,16 @@ public class CommandHandler {
 		try {
 			for (Command command : commands) {
 				if (command.getCommands() != null) {
-					for(String string: command.getCommands()){
+					for (String string : command.getCommands()) {
 						if (longCommand.split(" ")[0].equalsIgnoreCase(string)) {
-							command.onCommand(sender, Arrays.copyOfRange(longCommand.split(" "), 1, longCommand.split(" ").length));
+							command.onCommand(sender,
+									Arrays.copyOfRange(longCommand.split(" "), 1, longCommand.split(" ").length));
 						}
 					}
 				} else {
 					if (longCommand.split(" ")[0].equalsIgnoreCase(command.getCommand())) {
-						command.onCommand(sender, Arrays.copyOfRange(longCommand.split(" "), 1, longCommand.split(" ").length));
+						command.onCommand(sender,
+								Arrays.copyOfRange(longCommand.split(" "), 1, longCommand.split(" ").length));
 					}
 				}
 			}

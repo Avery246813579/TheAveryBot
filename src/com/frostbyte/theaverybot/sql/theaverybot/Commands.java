@@ -11,6 +11,6 @@ public class Commands extends Table{
 		variables.put("content", "TEXT");
 		variables.put("group_id", "INT");
 		
-		addPrimaryKey("command_key");
+		addPrimaryKey("command_id");
 	}
 }
