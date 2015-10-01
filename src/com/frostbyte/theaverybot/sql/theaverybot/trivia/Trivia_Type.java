@@ -17,6 +17,9 @@ public class Trivia_Type extends Table{
 	 * {Hint}
 	 * {Answer}
 	 * {Question}
+	 * {Rank}
+	 * {Needed}
+	 * {Max}
 	 * 
 	 * For Answers:
 	 * First once is most correct,

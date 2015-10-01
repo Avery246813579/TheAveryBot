@@ -152,6 +152,10 @@ public class TriviaManager {
 
 		if (!trivia.containsKey(name)) {
 			trivia.put(name, ObjectUtil.objectToInt(playerInfo.get("points")) + 1);
+		}else{
+			int points = trivia.get(name);
+			trivia.remove(name);
+			trivia.put(name, points);
 		}
 
 		List<Map.Entry<String, Integer>> entries = new LinkedList<Map.Entry<String, Integer>>(trivia.entrySet());
@@ -176,7 +180,7 @@ public class TriviaManager {
 			last_points = 0;
 		}
 
-		int needed = last_points - (ObjectUtil.objectToInt(playerInfo.get("points")) + 1);
+		int needed = (ObjectUtil.objectToInt(playerInfo.get("points")) + 1) - last_points;
 
 		/** Send Message **/
 		String message = TriviaHandler.trivias.get(type_id).getMessages().get("CORRECT_ANSWER");
