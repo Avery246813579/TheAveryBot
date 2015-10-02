@@ -9,8 +9,9 @@ import com.frostbyte.theaverybot.bots.BotManager;
 import com.frostbyte.theaverybot.commands.defaults.CreditCommand;
 import com.frostbyte.theaverybot.commands.defaults.DeveloperCommand;
 import com.frostbyte.theaverybot.commands.defaults.PointCommand;
-import com.frostbyte.theaverybot.commands.defaults.TRankCommand;
-import com.frostbyte.theaverybot.commands.defaults.TriviaCommand;
+import com.frostbyte.theaverybot.commands.defaults.trivia.TriviaBoardCommand;
+import com.frostbyte.theaverybot.commands.defaults.trivia.TriviaCommand;
+import com.frostbyte.theaverybot.commands.defaults.trivia.TriviaRankCommand;
 import com.frostbyte.theaverybot.sql.SqlHandler;
 import com.frostbyte.theaverybot.util.ObjectUtil;
 
@@ -23,7 +24,8 @@ public class CommandHandler {
 		commands.add(new CreditCommand(botManager));
 		commands.add(new DeveloperCommand(botManager));
 		commands.add(new TriviaCommand(botManager));
-		commands.add(new TRankCommand(botManager));
+		commands.add(new TriviaRankCommand(botManager));
+		commands.add(new TriviaBoardCommand(botManager));
 
 		if (SqlHandler.commands.get("account_id", botManager.getAccount_id()) != null) {
 			for (final Map<String, Object> commands : SqlHandler.commands.get("account_id",

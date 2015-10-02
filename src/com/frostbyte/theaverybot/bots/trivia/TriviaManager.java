@@ -31,12 +31,11 @@ public class TriviaManager {
 		checkStatus();
 		resetTrivia();
 
-		/* Sorts Rank Stuff **/
+		/* Sorts Rank Stuff * */
 		Map<String, Object> where = new HashMap<String, Object>();
 		where.put("channel", botManager.channel);
 		for (Map<String, Object> users : SqlHandler.currencies.get(where)) {
-			List<Map<String, Object>> tables = SqlHandler.twitch_Accounts.get("twitch_id",
-					ObjectUtil.objectToInt(users.get("twitch_id")));
+			List<Map<String, Object>> tables = SqlHandler.twitch_Accounts.get("twitch_id", ObjectUtil.objectToInt(users.get("twitch_id")));
 
 			if (tables.size() <= 0) {
 				Map<String, Object> table = new HashMap<String, Object>();
@@ -46,8 +45,7 @@ public class TriviaManager {
 				tables = SqlHandler.twitch_Accounts.get("twitch_id", ObjectUtil.objectToInt(users.get("twitch_id")));
 			}
 
-			trivia.put(ObjectUtil.objectToString(tables.get(0).get("username")),
-					ObjectUtil.objectToInt(users.get("points")));
+			trivia.put(ObjectUtil.objectToString(tables.get(0).get("username")), ObjectUtil.objectToInt(users.get("points")));
 		}
 
 	}
@@ -72,18 +70,17 @@ public class TriviaManager {
 			}
 
 			/** Sets Trivia Information **/
-			if(enabled  != (boolean) triviaInfo.get(0).get("active")){
+			if (enabled != (boolean) triviaInfo.get(0).get("active")) {
 				enabled = (boolean) triviaInfo.get(0).get("active");
 				resetTrivia();
-			
-				if(enabled){
+
+				if (enabled) {
 					triviaBot.sendMessage(TriviaHandler.trivias.get(type_id).getMessages().get("JOIN"));
-				}else{
+				} else {
 					triviaBot.sendMessage(TriviaHandler.trivias.get(type_id).getMessages().get("LEAVE"));
 				}
 			}
 
-			
 			delay = ObjectUtil.objectToInt(triviaInfo.get(0).get("delay"));
 		} catch (Exception ex) {
 			triviaBot.sendMessage("Error enabling Trivia! Setting to default!");
@@ -152,10 +149,10 @@ public class TriviaManager {
 
 		if (!trivia.containsKey(name)) {
 			trivia.put(name, ObjectUtil.objectToInt(playerInfo.get("points")) + 1);
-		}else{
+		} else {
 			int points = trivia.get(name);
 			trivia.remove(name);
-			trivia.put(name, points);
+			trivia.put(name, points++);
 		}
 
 		List<Map.Entry<String, Integer>> entries = new LinkedList<Map.Entry<String, Integer>>(trivia.entrySet());
@@ -180,13 +177,12 @@ public class TriviaManager {
 			last_points = 0;
 		}
 
-		int needed = (ObjectUtil.objectToInt(playerInfo.get("points")) + 1) - last_points;
+		int needed = last_points - (ObjectUtil.objectToInt(playerInfo.get("points")) + 1);
 
 		/** Send Message **/
 		String message = TriviaHandler.trivias.get(type_id).getMessages().get("CORRECT_ANSWER");
 		message = message.replaceAll("\\{PLAYER_NAME\\}", name);
-		message = message.replaceAll("\\{PLAYER_AMOUNT\\}",
-				"" + (ObjectUtil.objectToInt(playerInfo.get("points")) + 1));
+		message = message.replaceAll("\\{PLAYER_AMOUNT\\}", "" + (ObjectUtil.objectToInt(playerInfo.get("points")) + 1));
 		message = message.replaceAll("\\{ANSWER\\}", question.getAnswer());
 		message = message.replaceAll("\\{QUESTION\\}", question.getQuestion());
 		message = message.replaceAll("\\{RANK\\}", Integer.toString(getValue(name)));
@@ -241,6 +237,23 @@ public class TriviaManager {
 		message = message.replaceAll("\\{HINT\\}", hint);
 
 		triviaBot.sendMessage(message);
+	}
+
+	public void sortTrivia(){
+		List<Map.Entry<String, Integer>> entries = new LinkedList<Map.Entry<String, Integer>>(trivia.entrySet());
+
+		Collections.sort(entries, new Comparator<Map.Entry<String, Integer>>() {
+			public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) {
+				return o2.getValue().compareTo(o1.getValue());
+			}
+		});
+
+		trivia.clear();
+
+		for (Map.Entry<String, Integer> entry : entries) {
+			trivia.put(entry.getKey(), entry.getValue());
+		}
+		
 	}
 
 	public void setEnabled(boolean enabled) {

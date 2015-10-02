@@ -1,4 +1,4 @@
-package com.frostbyte.theaverybot.commands.defaults;
+package com.frostbyte.theaverybot.commands.defaults.trivia;
 
 import com.frostbyte.theaverybot.bots.BotManager;
 import com.frostbyte.theaverybot.commands.Command;
