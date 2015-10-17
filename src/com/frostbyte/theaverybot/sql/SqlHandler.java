@@ -6,6 +6,9 @@ import com.frostbyte.theaverybot.sql.theaverybot.Currencies;
 import com.frostbyte.theaverybot.sql.theaverybot.bots.Bot_Settings;
 import com.frostbyte.theaverybot.sql.theaverybot.bots.Bot_Type;
 import com.frostbyte.theaverybot.sql.theaverybot.bots.Byte_Bots;
+import com.frostbyte.theaverybot.sql.theaverybot.chance.Chance_Response;
+import com.frostbyte.theaverybot.sql.theaverybot.chance.Chance_Settings;
+import com.frostbyte.theaverybot.sql.theaverybot.chance.Chance_Type;
 import com.frostbyte.theaverybot.sql.theaverybot.trivia.Trivia_Questions;
 import com.frostbyte.theaverybot.sql.theaverybot.trivia.Trivia_Settings;
 import com.frostbyte.theaverybot.sql.theaverybot.trivia.Trivia_Type;
@@ -22,13 +25,16 @@ public class SqlHandler extends com.frostbyte.javasqlapi.SqlHandler{
 	public static Commands commands = new Commands();
 	public static Trivia_Settings trivia_Settings = new Trivia_Settings();
 	public static Bot_Settings bot_Settings = new Bot_Settings();
+	public static Chance_Type chance_Type = new Chance_Type();
+	public static Chance_Settings chance_Settings = new Chance_Settings();
+	public static Chance_Response chance_Response = new Chance_Response();
 	
 	public SqlHandler() {
-		SQL_HOST = "198.245.55.118:6446";
-		SQL_PASS = "t]T}1a!@()90";
-		SQL_USER = "frostbyt_site";
-		//SQL_PASS = "";
-		//SQL_USER = "root";
+		SQL_HOST = "127.0.0.1";
+		//SQL_PASS = "t]T}1a!@()90";
+		//SQL_USER = "frostbyt_site";
+		SQL_PASS = "";
+		SQL_USER = "root";
 
 		log = false;
 		console_errors = true;
@@ -43,5 +49,8 @@ public class SqlHandler extends com.frostbyte.javasqlapi.SqlHandler{
 		commands.createTable();
 		trivia_Settings.createTable();
 		bot_Settings.createTable();
+		chance_Type.createTable();
+		chance_Settings.createTable();
+		chance_Response.createTable();
 	}
 }
