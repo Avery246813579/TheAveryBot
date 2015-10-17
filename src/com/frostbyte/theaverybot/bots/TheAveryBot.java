@@ -18,6 +18,10 @@ public class TheAveryBot extends FrostBot{
 
 	@Override
 	protected void onBotConnect() {
-		sendMessage("#" + getChannel(), "AveryBot has joined the chat");
+	}
+	
+	@Override
+	protected void onSubscribe(String channel, String user) {
+		botManager.onSubscribe(channel, user);
 	}
 }

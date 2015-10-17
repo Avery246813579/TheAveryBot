@@ -31,11 +31,11 @@ public class InputThread extends Thread {
 			try {
 				int i = 1;
 
-				while (i != 0) {
+				while (i != 0 && irc.running) {
 					try {
 						String string = null;
 
-						while ((string = bufferedReader.readLine()) != null) {
+						while ((string = bufferedReader.readLine()) != null && irc.running) {
 							try {
 								irc.handleLine(string);
 							} catch (Exception exception) {

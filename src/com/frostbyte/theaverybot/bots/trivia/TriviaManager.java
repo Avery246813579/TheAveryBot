@@ -25,9 +25,10 @@ public class TriviaManager {
 	private BotManager botManager;
 
 	public TriviaManager(BotManager botManager) {
-		this.triviaBot = new TriviaBot(this, botManager.channel, botManager.trivia_username, botManager.trivia_oauth);
 		this.botManager = botManager;
-
+	}
+	
+	public void init(){
 		checkStatus();
 		resetTrivia();
 
@@ -47,9 +48,8 @@ public class TriviaManager {
 
 			trivia.put(ObjectUtil.objectToString(tables.get(0).get("username")), ObjectUtil.objectToInt(users.get("points")));
 		}
-
 	}
-
+	
 	public void checkStatus() {
 		try {
 			/** Declares Player Finder **/

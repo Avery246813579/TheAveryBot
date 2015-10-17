@@ -24,11 +24,11 @@ public class SqlHandler extends com.frostbyte.javasqlapi.SqlHandler{
 	public static Bot_Settings bot_Settings = new Bot_Settings();
 	
 	public SqlHandler() {
-		SQL_HOST = "127.0.0.1";
-		//SQL_PASS = "t]T}1a!@()90";
-		//SQL_USER = "frostbyt_site";
-		SQL_PASS = "";
-		SQL_USER = "root";
+		SQL_HOST = "198.245.55.118:6446";
+		SQL_PASS = "t]T}1a!@()90";
+		SQL_USER = "frostbyt_site";
+		//SQL_PASS = "";
+		//SQL_USER = "root";
 
 		log = false;
 		console_errors = true;

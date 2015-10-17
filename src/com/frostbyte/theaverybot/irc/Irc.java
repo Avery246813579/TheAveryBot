@@ -175,7 +175,7 @@ public class Irc implements ReplyConstants {
 				findUser(split[2].substring(1)).setSub(true);
 				onSubscribe(split[2].substring(1), split[3].substring(1));
 			} catch (Exception ex) {
-				
+
 			}
 		}
 
@@ -258,7 +258,9 @@ public class Irc implements ReplyConstants {
 		}
 
 		if (command.equals("PRIVMSG") && _channelPrefixes.indexOf(target.charAt(0)) >= 0) {
-			onMessage(target, sourceNick, sourceLogin, sourceHostname, line.substring(line.indexOf(" :") + 2));
+			if (running) {
+				onMessage(target, sourceNick, sourceLogin, sourceHostname, line.substring(line.indexOf(" :") + 2));
+			}
 		} else if (command.equals("PART")) {
 			removeUser(new User("", sourceNick));
 		} else if (command.equals("JOIN")) {

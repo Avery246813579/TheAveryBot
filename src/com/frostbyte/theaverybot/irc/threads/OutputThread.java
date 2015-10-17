@@ -34,7 +34,7 @@ public class OutputThread extends Thread {
 		while (irc.running) {
 			try {
 				int i = 1;
-				while (i != 0) {
+				while (i != 0 && irc.running) {
 					Thread.sleep(irc.getMessageDelay());
 
 					String string = (String) queue.next();

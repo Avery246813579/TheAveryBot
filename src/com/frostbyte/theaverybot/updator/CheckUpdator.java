@@ -16,6 +16,7 @@ public class CheckUpdator implements Runnable{
 	public void run(){
 		for(ActiveBot activeBot : BotLoading.bots){
 			activeBot.getBotManager().getTriviaManager().checkStatus();
+			activeBot.getBotManager().loadBotSettings();
 		}
 	}
 }

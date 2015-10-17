@@ -11,6 +11,8 @@ public class Bot_Type extends Table{
 		variables.put("regular_oauth", "VARCHAR(100)");
 		variables.put("trivia_username", "VARCHAR(30)");
 		variables.put("trivia_oauth", "VARCHAR(30)");
+		variables.put("public", "BOOL");
+		variables.put("can_use", "TEXT");
 		addPrimaryKey("bot_id");
 	}
 }
