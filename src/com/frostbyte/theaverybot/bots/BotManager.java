@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.frostbyte.theaverybot.bots.bytesite.SiteManager;
+import com.frostbyte.theaverybot.bots.bytesite.SiteThread;
 import com.frostbyte.theaverybot.bots.trivia.TriviaBot;
 import com.frostbyte.theaverybot.bots.trivia.TriviaManager;
 import com.frostbyte.theaverybot.commands.CommandHandler;
@@ -12,14 +14,16 @@ import com.frostbyte.theaverybot.sql.SqlHandler;
 import com.frostbyte.theaverybot.util.ObjectUtil;
 
 public class BotManager {
+	private Map<String, String> messages = new HashMap<String, String>();
+	private SiteManager siteManager;
+	private SiteThread siteThread;
 	private BotThread botThread;
-	public String channel, botName, regular_username, regular_oauth, trivia_username, trivia_oauth;
-	private boolean enabled = false;
+	public String channel;
+	private boolean enabled = false, site = false;
 	private TriviaManager triviaManager;
 	private CommandHandler commandHandler;
 	private TheAveryBot averyBot;
 	private int account_id;
-	private Map<String, String> messages = new HashMap<String, String>();
 	private String stringSettings = "NULL";
 	private int botType = -1;
 
@@ -37,6 +41,13 @@ public class BotManager {
 
 		botThread = new BotThread(this);
 		botThread.start();
+
+		if (siteManager == null) {
+			siteManager = new SiteManager(this);
+		}
+		
+		siteThread = new SiteThread(this);
+		siteThread.start();
 	}
 
 	public void loadBotSettings() {
@@ -66,11 +77,11 @@ public class BotManager {
 				table = SqlHandler.bot_Type.get("bot_id", botType).get(0);
 			}
 
-			botName = (String) table.get("name");
-			trivia_username = (String) table.get("trivia_username");
-			trivia_oauth = (String) table.get("trivia_oauth");
-			regular_username = (String) table.get("regular_username");
-			regular_oauth = (String) table.get("regular_oauth");
+			String botName = (String) table.get("name");
+			String trivia_username = (String) table.get("trivia_username");
+			String trivia_oauth = (String) table.get("trivia_oauth");
+			String regular_username = (String) table.get("regular_username");
+			String regular_oauth = (String) table.get("regular_oauth");
 
 			if (averyBot != null) {
 				averyBot.running = false;
@@ -96,6 +107,16 @@ public class BotManager {
 			}
 
 			averyBot.sendMessage(joinMessage);
+		}
+
+		List<Map<String, Object>> sites = SqlHandler.sites.get(settingsWhere);
+		site = !sites.isEmpty();
+		if (site) {
+			if (siteManager == null) {
+				siteManager = new SiteManager(this);
+			}
+			
+			siteManager.update(sites.get(0));
 		}
 
 		if (!stringSettings.equalsIgnoreCase((String) settingsTable.get(0).get("messages"))) {
@@ -138,6 +159,10 @@ public class BotManager {
 		if (commandHandler != null) {
 			commandHandler.onMessage(sender, message);
 		}
+
+		if (site) {
+			siteManager.onMessage(channel, sender, message);
+		}
 	}
 
 	public boolean isEnabled() {
@@ -178,5 +203,21 @@ public class BotManager {
 
 	public void setAccount_id(int account_id) {
 		this.account_id = account_id;
+	}
+
+	public boolean isSite() {
+		return site;
+	}
+
+	public void setSite(boolean site) {
+		this.site = site;
+	}
+
+	public SiteManager getSiteManager() {
+		return siteManager;
+	}
+
+	public void setSiteManager(SiteManager siteManager) {
+		this.siteManager = siteManager;
 	}
 }

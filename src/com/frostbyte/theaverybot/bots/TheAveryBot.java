@@ -7,7 +7,7 @@ public class TheAveryBot extends FrostBot{
 	
 	public TheAveryBot(BotManager botManager, String channel, String username, String oauth) {
 		super(channel, username, oauth);
-		
+
 		this.botManager = botManager;
 	}
 

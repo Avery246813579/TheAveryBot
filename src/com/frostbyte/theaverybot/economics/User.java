@@ -9,11 +9,18 @@ import com.frostbyte.theaverybot.sql.SqlHandler;
 public class User {
 	private UserManager manager;
 	private int twitch_id, saveTime, points, credits, custom;
+	private boolean active = false;
 	private String name;
 
 	public User(UserManager manager, String name) {
 		this.manager = manager;
 		this.name = name;
+		
+		load();
+	}
+	
+	public void resetTime(){
+		saveTime = 0;
 	}
 
 	public void load() {
@@ -40,8 +47,9 @@ public class User {
 		Map<String, Object> currencTable = currencyList.get(0);
 		points = (int) currencTable.get("points");
 		credits = (int) currencTable.get("credits");
-		custom = (int) currencTable.get();
-
+		custom = (int) currencTable.get("custom");
+		
+		active = true;
 	}
 
 	public void save() {
@@ -115,5 +123,13 @@ public class User {
 
 	public String getName() {
 		return name;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 }

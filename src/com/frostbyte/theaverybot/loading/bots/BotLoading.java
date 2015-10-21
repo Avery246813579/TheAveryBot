@@ -18,7 +18,7 @@ public class BotLoading {
 			ActiveBot activeBot = get(ObjectUtil.objectToInt(table.get("account_id")));
 			
 			if(activeBot == null){
-				ActiveBot botActive = new ActiveBot(ObjectUtil.objectToInt(table.get("byte_id")), ObjectUtil.objectToInt(table.get("account_id")), ObjectUtil.objectToInt(table.get("bot_id")));
+				ActiveBot botActive = new ActiveBot(ObjectUtil.objectToInt(table.get("byte_id")), ObjectUtil.objectToInt(table.get("account_id")));
 				bots.add(botActive);
 				activeBots.add(botActive);
 			}else{

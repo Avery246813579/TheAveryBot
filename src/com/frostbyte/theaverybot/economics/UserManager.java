@@ -7,10 +7,19 @@ import com.frostbyte.theaverybot.bots.BotManager;
 
 public class UserManager {
 	private List<User> users = new ArrayList<User>();
+	private UserThread userThread = new UserThread(this);
 	private BotManager botManager;
 
 	public UserManager(BotManager botManager) {
 		this.botManager = botManager;
+		
+		userThread.start();
+	}
+	
+	public void saveAll(){
+		for(User user : users){
+			saveUser(user);
+		}
 	}
 	
 	public void saveUser(User user){
@@ -23,10 +32,16 @@ public class UserManager {
 		User user = getUser(name);
 		
 		if(user != null){
+			user.resetTime();
 			return user;
 		}
 		
+		user = new User(this, name);
+		if(!user.isActive()){
+			return null;
+		}
 		
+		users.add(user);
 		return user;
 	}
 	

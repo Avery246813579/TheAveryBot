@@ -37,7 +37,7 @@ public class Irc implements ReplyConstants {
 	private String _channelPrefixes = "#&+!";
 
 	/** Configuration **/
-	private boolean verbose = false;
+	public boolean verbose = false;
 	private boolean debug = false;
 	private String username;
 
@@ -397,5 +397,13 @@ public class Irc implements ReplyConstants {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 }

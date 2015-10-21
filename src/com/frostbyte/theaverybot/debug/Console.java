@@ -7,21 +7,22 @@ import java.util.Scanner;
 import com.frostbyte.theaverybot.Main;
 import com.frostbyte.theaverybot.debug.commands.TriviaCommand;
 
-public class Console {
+public class Console extends Thread{
 	public static List<ConsoleCommand> commands = new ArrayList<ConsoleCommand>();
 	public static boolean log = true, debug = true;
 	Scanner scanner = new Scanner(System.in);
 
 	public Console() {
 		new TriviaCommand();
-		
-		checkCommand();
 	}
 
+	public void run(){
+		checkCommand();
+	}
+	
 	public void checkCommand(){
 		String nextLine= scanner.nextLine();
 		
-		System.out.println("Kitten");
 		for(ConsoleCommand command : commands){
 			String lowerCase = command.getCommand().toLowerCase();
 			

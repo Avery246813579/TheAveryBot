@@ -6,6 +6,7 @@ import com.frostbyte.theaverybot.loading.Loader;
 import com.frostbyte.theaverybot.sql.SqlHandler;
 import com.frostbyte.theaverybot.updator.CheckUpdator;
 import com.frostbyte.theaverybot.updator.UpdateManager;
+import com.frostbyte.theaverybot.util.CloseThread;
 
 public class Main {
 	public static String version = "v1.0.0";
@@ -18,6 +19,8 @@ public class Main {
 		new UpdateManager();
 		new CheckUpdator();
 		
-		new Console();
+		Runtime.getRuntime().addShutdownHook(new CloseThread());
+		
+		new Console().start();
 	}
 }
