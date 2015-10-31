@@ -56,13 +56,15 @@ public class SiteManager {
 	}
 
 	public void onMessage(String channel, String sender, String message) {
-		if (message.split(" ")[0].equalsIgnoreCase("$" + name) || message.split(" ")[0].equalsIgnoreCase("!" + name)) {
-			Map<String, Object> currency = PlayerUtil.getCurrency(sender, botManager.channel);
+		if (botManager.isSite()) {
+			if (message.split(" ")[0].equalsIgnoreCase("$" + name) || message.split(" ")[0].equalsIgnoreCase("!" + name)) {
+				Map<String, Object> currency = PlayerUtil.getCurrency(sender, botManager.channel);
 
-			if (currency != null) {
-				botManager.getAveryBot().sendMessage(sender + " has " + currency.get("custom") + " " + name + "!");
-			}else{
-				botManager.getAveryBot().sendMessage("Account not setup yet! Wait a minute!");
+				if (currency != null) {
+					botManager.getAveryBot().sendMessage(sender + " has " + currency.get("custom") + " " + name + "!");
+				} else {
+					botManager.getAveryBot().sendMessage("Account not setup yet! Wait a minute!");
+				}
 			}
 		}
 	}

@@ -31,24 +31,24 @@ public class TwitchUtil {
 			JSONArray admins = (JSONArray) chatters.get("admins");
 			JSONArray global_mods = (JSONArray) chatters.get("global_mods");
 			JSONArray viewers = (JSONArray) chatters.get("viewers");
-			
-			for(Object string : mods.toArray()){
-				users.add((String) string);
-			}
-			
-			for(Object string : staff.toArray()){
+
+			for (Object string : mods.toArray()) {
 				users.add((String) string);
 			}
 
-			for(Object string : admins.toArray()){
+			for (Object string : staff.toArray()) {
 				users.add((String) string);
 			}
 
-			for(Object string : global_mods.toArray()){
+			for (Object string : admins.toArray()) {
 				users.add((String) string);
 			}
 
-			for(Object string : viewers.toArray()){
+			for (Object string : global_mods.toArray()) {
+				users.add((String) string);
+			}
+
+			for (Object string : viewers.toArray()) {
 				users.add((String) string);
 			}
 		} catch (Exception ex) {

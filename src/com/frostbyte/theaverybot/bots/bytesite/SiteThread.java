@@ -17,7 +17,7 @@ public class SiteThread extends Thread{
 		long elapsed;
 		long wait;
 
-		while (botManager.isEnabled()) {
+		while (botManager.isSite()) {
 			synchronized (this) {
 				FRAME++;
 
