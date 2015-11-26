@@ -52,7 +52,6 @@ public class TwitchUtil {
 				users.add((String) string);
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
 		}
 
 		return users;
